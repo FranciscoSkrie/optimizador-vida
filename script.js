@@ -9,7 +9,7 @@ const semana = [
   {
     nombre: "Jueves",
     actividades: [
-      { nombre: "Juntada", inicio: 0, fin: 2, realizada: false },
+      { nombre: "goldemessi", inicio: 0, fin: 2, realizada: false },
       { nombre: "Entrenar", inicio: 8, fin: 9, realizada: false },
       { nombre: "Comer", inicio: 13, fin: 14, realizada: false },
       { nombre: "Dormir", inicio: 23, fin: 24, realizada: false }
