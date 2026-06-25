@@ -16,7 +16,7 @@ const semana = [
     ]
   }
 ];
-
+function cargarActividades(){
 const dias = ["Domingo","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado"];
 
 const ahora = new Date();
@@ -44,7 +44,7 @@ actividades.forEach((a,i)=>{
     </div>
   `;
 });
-
+}
 let horasPendientes = 0;
 
 function generarCronograma(){
