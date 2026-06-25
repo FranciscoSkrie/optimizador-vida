@@ -20,22 +20,31 @@ const semana = [
 const dias = ["Domingo","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado"];
 
 let actividades = [];
-let ahora = new Date();
+let horasPendientes = 0;
+
+function obtenerDiaActual(){
+  const ahora = new Date();
+  const nombreDia = dias[ahora.getDay()];
+
+  const diaActual = semana.find(d => d.nombre === nombreDia);
+
+  return {
+    ahora,
+    nombreDia,
+    actividadesDia: diaActual ? diaActual.actividades : []
+  };
+}
 
 function cargarActividades(){
 
-  ahora = new Date();
+  const data = obtenerDiaActual();
+  actividades = data.actividadesDia;
 
-  const nombreDia = dias[ahora.getDay()];
-  const diaActual = semana.find(d => d.nombre === nombreDia);
-
-  actividades = diaActual ? diaActual.actividades : [];
-
-  document.getElementById("dia").innerText = nombreDia;
+  document.getElementById("dia").innerText = data.nombreDia;
 
   document.getElementById("hora").innerText =
-    ahora.getHours().toString().padStart(2,"0") + ":" +
-    ahora.getMinutes().toString().padStart(2,"0");
+    data.ahora.getHours().toString().padStart(2,"0") + ":" +
+    data.ahora.getMinutes().toString().padStart(2,"0");
 
   const contenedor = document.getElementById("actividades");
   contenedor.innerHTML = "";
@@ -50,11 +59,11 @@ function cargarActividades(){
   });
 }
 
-let horasPendientes = 0;
-
 function generarCronograma(){
 
-  let horaActual = ahora.getHours();
+  const horaBase = new Date().getHours();
+  let horaActual = horaBase;
+
   horasPendientes = 0;
   let salida = "";
 
@@ -81,7 +90,7 @@ function evaluarActividad(){
   const nombre = document.getElementById("nombreActividad").value;
   const duracion = parseInt(document.getElementById("duracionActividad").value);
 
-  const horaActual = ahora.getHours();
+  const horaActual = new Date().getHours();
   const libres = (24 - horaActual) - horasPendientes;
 
   if(duracion <= libres){
