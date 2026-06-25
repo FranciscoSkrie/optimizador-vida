@@ -16,35 +16,40 @@ const semana = [
     ]
   }
 ];
-function cargarActividades(){
+
 const dias = ["Domingo","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado"];
 
-const ahora = new Date();
-const nombreDia = dias[ahora.getDay()];
+let actividades = [];
+let ahora = new Date();
 
-const diaActual = semana.find(d => d.nombre === nombreDia);
+function cargarActividades(){
 
-// fallback por seguridad
-const actividades = diaActual ? diaActual.actividades : [];
+  ahora = new Date();
 
-document.getElementById("dia").innerText = nombreDia;
+  const nombreDia = dias[ahora.getDay()];
+  const diaActual = semana.find(d => d.nombre === nombreDia);
 
-document.getElementById("hora").innerText =
-  ahora.getHours().toString().padStart(2,"0") + ":" +
-  ahora.getMinutes().toString().padStart(2,"0");
+  actividades = diaActual ? diaActual.actividades : [];
 
-const contenedor = document.getElementById("actividades");
+  document.getElementById("dia").innerText = nombreDia;
 
-actividades.forEach((a,i)=>{
-  contenedor.innerHTML += `
-    <div class="actividad">
-      <input type="checkbox" id="act${i}">
-      ${a.nombre}
-      (${a.inicio}:00 - ${a.fin}:00)
-    </div>
-  `;
-});
+  document.getElementById("hora").innerText =
+    ahora.getHours().toString().padStart(2,"0") + ":" +
+    ahora.getMinutes().toString().padStart(2,"0");
+
+  const contenedor = document.getElementById("actividades");
+  contenedor.innerHTML = "";
+
+  actividades.forEach((a,i)=>{
+    contenedor.innerHTML += `
+      <div class="actividad">
+        <input type="checkbox" id="act${i}">
+        ${a.nombre} (${a.inicio}:00 - ${a.fin}:00)
+      </div>
+    `;
+  });
 }
+
 let horasPendientes = 0;
 
 function generarCronograma(){
@@ -74,11 +79,9 @@ function generarCronograma(){
 function evaluarActividad(){
 
   const nombre = document.getElementById("nombreActividad").value;
-
   const duracion = parseInt(document.getElementById("duracionActividad").value);
 
   const horaActual = ahora.getHours();
-
   const libres = (24 - horaActual) - horasPendientes;
 
   if(duracion <= libres){
@@ -89,3 +92,5 @@ function evaluarActividad(){
       `❌ No podés hacer ${nombre}. Solo tenés ${libres} horas libres.`;
   }
 }
+
+document.addEventListener("DOMContentLoaded", cargarActividades);
